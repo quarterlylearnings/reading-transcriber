@@ -4,6 +4,7 @@
 ### Custom ###
 sample-audio/
 creds/
+transcriptions/
 
 ### Flask ###
 instance/*
