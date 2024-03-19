@@ -20,18 +20,25 @@ def upload_file():
         transcription = transcribe_audio(content)
         return create_word_document(transcription)
 
-
-def transcribe_audio(content):
+def transcribe_audio(content, use_uri=False, uri=None):
     client = speech.SpeechClient()
 
-    audio = speech.RecognitionAudio(content=content)
+    if use_uri:
+        audio = speech.RecognitionAudio(uri=uri)
+    else:
+        audio = speech.RecognitionAudio(content=content)
+
     config = speech.RecognitionConfig(
         encoding=speech.RecognitionConfig.AudioEncoding.LINEAR16,
         sample_rate_hertz=44100,
         language_code="en-US",
+        enable_automatic_punctuation=True
     )
 
-    response = client.recognize(config=config, audio=audio)
+    operation = client.long_running_recognize(config=config, audio=audio)
+    print("Waiting for operation to complete...")
+
+    response = operation.result(timeout=90)
 
     transcription = ""
     for result in response.results:
