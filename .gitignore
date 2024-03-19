@@ -3,6 +3,7 @@
 
 ### Custom ###
 sample-audio/
+creds/
 
 ### Flask ###
 instance/*
