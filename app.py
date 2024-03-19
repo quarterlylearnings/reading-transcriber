@@ -19,7 +19,8 @@ def upload_file():
         content = file.read()
         transcription = transcribe_audio(content)
         return create_word_document(transcription)
-
+    
+#TODO - PLACE IN A SEPARATE FILE (GOING TO GROW DUE TO ADDING CONTEXT)
 def transcribe_audio(content, use_uri=False, uri=None):
     client = speech.SpeechClient()
 
@@ -46,7 +47,7 @@ def transcribe_audio(content, use_uri=False, uri=None):
 
     return transcription
 
-
+#TODO - PLACE IN A SEPARATE FILE
 def create_word_document(transcription):
     document = Document()
     document.add_heading("Reading Title", 0)
