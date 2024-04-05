@@ -1,9 +1,13 @@
-from flask import Flask, request, send_file
-from google.cloud import speech
+from flask import Flask, request, send_file, jsonify
+from google.cloud import speech, storage
 from docx import Document
 import io
 
 app = Flask(__name__)
+
+storage_client = storage.Client()
+bucket_name = io.getenv("GCS_AUDIO_BUCKET_NAME")
+bucket = storage_client.bucket(bucket_name)
 
 @app.route("/upload", methods=["POST"])
 def upload_file():
@@ -16,9 +20,14 @@ def upload_file():
         return "No selected file", 400
 
     if file:
-        content = file.read()
-        transcription = transcribe_audio(content)
-        return create_word_document(transcription)
+        filename = file.filename
+
+        blob = bucket.blob(filename)
+        blob.upload_from_string(file.read(), content_type=file.content_type)
+
+        return jsonify({"message": "File uploaded successfully", "gcs_path": f"gs://{bucket_name}/{filename}"})
+        # transcription = transcribe_audio(content)
+        # return create_word_document(transcription)
     
 #TODO - PLACE IN A SEPARATE FILE (GOING TO GROW DUE TO ADDING CONTEXT)
 def transcribe_audio(content, use_uri=False, uri=None):
