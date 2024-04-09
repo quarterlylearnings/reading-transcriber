@@ -1,12 +1,12 @@
 from flask import Flask, request, send_file, jsonify
 from google.cloud import speech, storage, firestore
 from docx import Document
-import io
+import os
 
 app = Flask(__name__)
 
 storage_client = storage.Client()
-bucket_name = io.getenv("GCS_AUDIO_BUCKET_NAME")
+bucket_name = os.getenv("GCS_AUDIO_BUCKET_NAME")
 bucket = storage_client.bucket(bucket_name)
 
 db = firestore.Client()
@@ -26,12 +26,16 @@ def upload_file():
 
         blob = bucket.blob(filename)
         blob.upload_from_string(file.read(), content_type=file.content_type)
-        
-        return jsonify({"message": "File uploaded successfully", "gcs_path": f"gs://{bucket_name}/{filename}"})
-        # transcription = transcribe_audio(content)
-        # return create_word_document(transcription)
+
+        gcs_path = f"gs://{bucket_name}/{filename}"
+        store_file_metadata(filename, gcs_path)
+
+        transcription = transcribe_audio(gcs_path)
+        return create_word_document(transcription)
     
 def store_file_metadata(filename, gcs_path, transcription_status="pending"):
+    # log db object
+    print(db.collection("reading-metadata"))
     doc_ref = db.collection("reading-metadata").document(filename)
     doc_ref.set({
         "filename": filename,
@@ -40,13 +44,10 @@ def store_file_metadata(filename, gcs_path, transcription_status="pending"):
     })
     
 #TODO - PLACE IN A SEPARATE FILE (GOING TO GROW DUE TO ADDING CONTEXT)
-def transcribe_audio(content, use_uri=False, uri=None):
+def transcribe_audio(uri=None):
     client = speech.SpeechClient()
 
-    if use_uri:
-        audio = speech.RecognitionAudio(uri=uri)
-    else:
-        audio = speech.RecognitionAudio(content=content)
+    audio = speech.RecognitionAudio(uri=uri)
 
     config = speech.RecognitionConfig(
         encoding=speech.RecognitionConfig.AudioEncoding.LINEAR16,
