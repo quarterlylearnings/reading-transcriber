@@ -1,6 +1,5 @@
-from flask import Flask, request, send_file, jsonify
+from flask import Flask, request
 from google.cloud import storage
-from docx import Document
 from transcribe import transcribe_gcs_audio_file
 import os
 
@@ -31,15 +30,7 @@ def upload_file():
         return transcription
     
 #TODO - PLACE IN A SEPARATE FILE
-def create_word_document(transcription):
-    document = Document()
-    document.add_heading("Reading Title", 0)
-    document.add_heading("A Commentary", level=2)
-    document.add_paragraph(transcription)
 
-    document.save("transcription.docx")
-
-    return send_file("transcription.docx", as_attachment=True)
 
 
 if __name__ == "__main__":
