@@ -31,5 +31,3 @@ def upload_file():
         return create_word_document(transcription, filename)
  
 
-if __name__ == "__main__":
-    app.run(debug=True)
