@@ -1,6 +1,7 @@
 from flask import Flask, request
 from google.cloud import storage
 from transcribe import transcribe_gcs_audio_file
+from create_document import create_word_document
 import os
 
 app = Flask(__name__)
@@ -27,11 +28,8 @@ def upload_file():
 
         uri = f"gs://{bucket_name}/{filename}"
         transcription = transcribe_gcs_audio_file(uri, filename)
-        return transcription
-    
-#TODO - PLACE IN A SEPARATE FILE
-
-
+        return create_word_document(transcription, filename)
+ 
 
 if __name__ == "__main__":
     app.run(debug=True)
