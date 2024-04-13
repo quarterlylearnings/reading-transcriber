@@ -43,4 +43,5 @@ def upload_file():
         transcription = transcribe_gcs_audio_file(uri, filename)
         return create_word_document(transcription, filename)
  
-
+if __name__ == "__main__":
+    app.run()
