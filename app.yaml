@@ -1,4 +1,4 @@
-runtime: python39
+runtime: python3.11
 
 handlers:
 - url: /.*
