@@ -15,7 +15,6 @@
 
 ### Custom ###
 sample-audio/
-creds/
 transcriptions/
 
 # Python pycache:
