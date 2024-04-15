@@ -1,3 +1,6 @@
 runtime: python311
-env: flex
-entrypoint: gunicorn -b :$PORT app:app
+env: standard
+entrypoint: gunicorn -b :$PORT -w 2 main:app
+
+env_variables:
+  GCS_AUDIO_BUCKET_NAME: "loc_audio_readings"
