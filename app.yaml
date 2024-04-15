@@ -1,6 +1,7 @@
 runtime: python311
 env: standard
-entrypoint: gunicorn -b :$PORT -w 2 main:app
+entrypoint: gunicorn -t 0 -b :$PORT -w 2 main:app
 
 env_variables:
   GCS_AUDIO_BUCKET_NAME: "loc_audio_readings"
+  GCS_TRANSCRIPTION_BUCKET_NAME: "loc_automated_transcriptions"
