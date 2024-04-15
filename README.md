@@ -1,6 +1,6 @@
 # Audio Transcription Tool
 
-This is a web application written to accept an audio files, transcribe it using Google's Speech-to-Text API, and generate a downloadable Word document containing the transcription. It leverages Flask for the web server, Google Cloud Storage for storing audio files, and will soon use Google Cloud Firestore for managing metadata.
+A web application written to accept an audio file, transcribe it using Google's Speech-to-Text API, and generate a downloadable Word document containing the transcription. It leverages Flask for the web server, Google Cloud Storage for storing audio files, and will soon use Google Cloud Firestore for managing metadata.
 
 <!-- ## Architecture Overview
 
