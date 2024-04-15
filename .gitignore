@@ -3,9 +3,10 @@
 
 ### Custom ###
 sample-audio/
-creds/
 transcriptions/
-
+### GCP ###
+app.yaml
+creds/
 ### Flask ###
 instance/*
 !instance/.gitignore

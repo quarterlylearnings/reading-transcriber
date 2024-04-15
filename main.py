@@ -10,6 +10,19 @@ storage_client = storage.Client()
 bucket_name = os.getenv("GCS_AUDIO_BUCKET_NAME")
 bucket = storage_client.bucket(bucket_name)
 
+# Return page describing the upload service and how to use it
+@app.route("/")
+def root():
+    return """
+    <h1>Upload an audio file</h1>
+    <form method="post" action="/upload" enctype="multipart/form-data">
+        <input type="file" name="file">
+        <input type="submit" value="Upload">
+    </form>
+    """
+
+
+# This route will be used to upload an audio file to the server
 @app.route("/upload", methods=["POST"])
 def upload_file():
     print(request.files)
@@ -30,6 +43,5 @@ def upload_file():
         transcription = transcribe_gcs_audio_file(uri, filename)
         return create_word_document(transcription, filename)
  
-
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run()
