@@ -13,8 +13,7 @@ def transcribe_gcs_audio_file(gcs_uri, filename):
     )
 
     config = speech.RecognitionConfig(
-        encoding=speech.RecognitionConfig.AudioEncoding.LINEAR16,
-        sample_rate_hertz=44100,
+        encoding=speech.RecognitionConfig.AudioEncoding.MP3,
         language_code="en-US",
         enable_automatic_punctuation=True,
         diarization_config=speaker_diarization_config,
@@ -23,7 +22,7 @@ def transcribe_gcs_audio_file(gcs_uri, filename):
     operation = client.long_running_recognize(config=config, audio=audio)
     print("Waiting for operation to complete...")
 
-    response = operation.result(timeout=90)
+    response = operation.result()
 
     transcription = ""
     for result in response.results:
