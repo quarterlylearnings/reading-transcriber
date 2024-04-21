@@ -22,10 +22,4 @@ def transcribe_gcs_audio_file(gcs_uri, filename):
     operation = client.long_running_recognize(config=config, audio=audio)
     print("Waiting for operation to complete...")
 
-    response = operation.result()
-
-    transcription = ""
-    for result in response.results:
-        transcription += result.alternatives[0].transcript + "\n"
-
-    return transcription
+    return operation.running()
