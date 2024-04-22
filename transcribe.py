@@ -20,8 +20,7 @@ def transcribe_gcs_audio_file(gcs_uri, filename):
     )
 
     output_config = speech.TranscriptOutputConfig(
-        gcs_uri=f"gs://{os.getenv('GCS_TRANSCRIPTION_BUCKET_NAME')}/{filename}",
-        enable_automatic_punctuation=True,
+        gcs_uri=f"gs://{os.getenv('GCS_TRANSCRIPTION_BUCKET_NAME')}/{filename}"
     )
 
     operation = client.long_running_recognize(config=config, audio=audio, output_config=output_config)
