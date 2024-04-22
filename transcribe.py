@@ -1,3 +1,4 @@
+from flask import jsonify
 from google.cloud import speech
 import os
 
@@ -30,5 +31,7 @@ def transcribe_gcs_audio_file(gcs_uri, filename):
 
     operation = client.long_running_recognize(request=request)
     print("Waiting for operation to complete...")
-
-    return operation.running()
+    
+    #return a JSON object with a boolean of whether the operation is running
+    response = jsonify({"running": operation.running()})
+    return response
