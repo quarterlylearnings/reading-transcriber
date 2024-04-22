@@ -1,6 +1,7 @@
 from google.cloud import speech
 import os
 
+
 def transcribe_gcs_audio_file(gcs_uri, filename):
     client = speech.SpeechClient()
 
@@ -23,7 +24,11 @@ def transcribe_gcs_audio_file(gcs_uri, filename):
         gcs_uri=f"gs://{os.getenv('GCS_TRANSCRIPTION_BUCKET_NAME')}/{filename}"
     )
 
-    operation = client.long_running_recognize(config=config, audio=audio, output_config=output_config)
+    request = speech.LongRunningRecognizeRequest(
+        config=config, audio=audio, output_config=output_config
+    )
+
+    operation = client.long_running_recognize(request=request)
     print("Waiting for operation to complete...")
 
     return operation.running()
