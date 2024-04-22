@@ -21,7 +21,6 @@ def root():
     </form>
     """
 
-
 # This route will be used to upload an audio file to the server
 @app.route("/upload", methods=["POST"])
 def upload_file():
@@ -40,8 +39,7 @@ def upload_file():
         blob.upload_from_string(file.read(), content_type=file.content_type)
 
         uri = f"gs://{bucket_name}/{filename}"
-        transcription = transcribe_gcs_audio_file(uri, filename)
-        return create_word_document(transcription, filename)
+        return transcribe_gcs_audio_file(uri, filename)
  
 if __name__ == "__main__":
     app.run()
