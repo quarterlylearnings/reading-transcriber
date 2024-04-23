@@ -22,7 +22,7 @@ def transcribe_gcs_audio_file(gcs_uri, filename):
     )
 
     output_config = speech.TranscriptOutputConfig(
-        gcs_uri=f"gs://{os.getenv('GCS_TRANSCRIPTION_BUCKET_NAME')}/{filename}"
+        gcs_uri=f"gs://{os.getenv('GCS_TRANSCRIPTION_BUCKET_NAME')}/{filename}.json"
     )
 
     request = speech.LongRunningRecognizeRequest(
@@ -31,7 +31,7 @@ def transcribe_gcs_audio_file(gcs_uri, filename):
 
     operation = client.long_running_recognize(request=request)
     print("Waiting for operation to complete...")
-    
+
     #return a JSON object with a boolean of whether the operation is running
     response = jsonify({"running": operation.running()})
     return response
