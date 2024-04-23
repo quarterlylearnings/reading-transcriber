@@ -18,7 +18,7 @@ def transcribe_gcs_audio_file(gcs_uri, filename):
         encoding=speech.RecognitionConfig.AudioEncoding.MP3,
         language_code="en-US",
         enable_automatic_punctuation=True,
-        diarization_config=speaker_diarization_config,
+        # diarization_config=speaker_diarization_config,
     )
 
     output_config = speech.TranscriptOutputConfig(
