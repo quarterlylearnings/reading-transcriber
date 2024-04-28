@@ -16,7 +16,6 @@ def transcribe_gcs_audio_file(gcs_uri, filename):
 
     config = speech.RecognitionConfig(
         encoding=speech.RecognitionConfig.AudioEncoding.LINEAR16,
-        sample_rate_hertz=16000,
         language_code="en-US",
         enable_automatic_punctuation=True,
         diarization_config=speaker_diarization_config,
