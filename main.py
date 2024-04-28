@@ -42,7 +42,7 @@ def upload_file():
         file_path = os.path.join("/tmp", filename)
         file.save(file_path)
 
-        if filename.lower.endswith(".mp3"):
+        if filename.lower().endswith(".mp3"):
             wav_filename = filename.replace(".mp3", ".wav")
             wav_path = os.path.join("/tmp", wav_filename)
             convert_mp3_to_wav(file_path, wav_path)
