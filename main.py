@@ -34,9 +34,12 @@ def upload_file():
 
     if file:
         filename = file.filename
+        file_path = os.path.join("/tmp", filename)
+        file.save(file_path)
 
         blob = bucket.blob(filename)
-        blob.upload_from_string(file.read(), content_type=file.content_type)
+        with open(file_path, "rb") as f:
+            blob.upload_from_file(f)
 
         uri = f"gs://{bucket_name}/{filename}"
         return transcribe_gcs_audio_file(uri, filename)
