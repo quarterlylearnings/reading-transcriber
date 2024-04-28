@@ -2,7 +2,7 @@ from flask import Flask, request
 from google.cloud import storage
 from transcribe import transcribe_gcs_audio_file
 import os
-from pydub import AudioSegment
+import subprocess
 
 app = Flask(__name__)
 
@@ -11,8 +11,8 @@ bucket_name = os.getenv("GCS_AUDIO_BUCKET_NAME")
 bucket = storage_client.bucket(bucket_name)
 
 def convert_mp3_to_wav(mp3_path, wav_path):
-    audio = AudioSegment.from_mp3(mp3_path)
-    audio.export(wav_path, format="wav")
+    subprocess.run(['ffmpeg', '-i', mp3_path, '-acodec', 'pcm_s16le', '-ar', '16000', '-ac', '1', wav_path], check=True)
+
 
 # Return page describing the upload service and how to use it
 @app.route("/")
@@ -43,8 +43,8 @@ def upload_file():
         file.save(file_path)
 
         if filename.lower().endswith(".mp3"):
-            wav_filename = filename.replace(".mp3", ".wav")
-            wav_path = os.path.join("/tmp", wav_filename)
+            filename = filename.replace(".mp3", ".wav")
+            wav_path = os.path.join("/tmp", filename)
             convert_mp3_to_wav(file_path, wav_path)
             file_path = wav_path
 
